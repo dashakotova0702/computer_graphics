@@ -1,0 +1,52 @@
+window.onload = function(){
+  var width = window.innerWidth;
+  var height = window.innerHeight;
+  var canvas = document.getElementById('canvas');
+  canvas.setAttribute('width', width);
+  canvas.setAttribute('height', height);
+  var renderer = new THREE.WebGLRenderer({canvas: canvas});
+  renderer.setSize(width, height);
+  renderer.setClearColor(0x000000);
+  var scene = new THREE.Scene();
+  var camera = new THREE.PerspectiveCamera(45, width/height, 0.1, 300000);
+  camera.position.set(1000, 6000, 15000);
+  var controls = new THREE.OrbitControls(camera,renderer.domElement);
+  var light = new THREE.AmbientLight(0xffffff);
+  scene.add(light);
+  var sun_geometry = new THREE.SphereGeometry(2300, 80, 80);
+  var sun_material = new THREE.MeshNormalMaterial({
+    wireframe: true
+  });
+  var sun = new THREE.Mesh(sun_geometry, sun_material);
+  scene.add(sun);
+  var earth_geometry = new THREE.SphereGeometry(100, 40, 40);
+  var material = new THREE.MeshNormalMaterial();
+  var earth = new THREE.Mesh(earth_geometry, material);
+  scene.add(earth);
+  var mercury_geometry = new THREE.SphereGeometry(60, 20, 20);
+  var mercury = new THREE.Mesh(mercury_geometry, material);
+  scene.add(mercury);
+  var venus_geometry = new THREE.SphereGeometry(90, 20, 20);
+  var venus = new THREE.Mesh(venus_geometry, material);
+  scene.add(venus);
+  var mars_geometry = new THREE.SphereGeometry(80, 20, 20);
+  var mars = new THREE.Mesh(mars_geometry, material);
+  scene.add(mars);
+  var t = 0;
+  var rendering = function() {
+    requestAnimationFrame(rendering);
+    sun.rotation.y += 0.001;
+    earth.position.x = Math.sin(t*0.1)*7500;
+    earth.position.z = Math.cos(t*0.1)*7500;
+    mercury.position.x = Math.sin(t*0.3)*4000;
+    mercury.position.z = Math.cos(t*0.3)*7500;
+    venus.position.x = Math.sin(t)*5500;
+    venus.position.z = Math.cos(t)*7500;
+    mars.position.x = Math.sin(t*0.08)*8000;
+    mars.position.z = Math.cos(t*0.08)*7500;
+    controls.update();
+    renderer.render(scene, camera);
+    t += 0.1;
+  };
+  rendering();
+};
